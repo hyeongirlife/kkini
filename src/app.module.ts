@@ -11,7 +11,5 @@ import { AuthService } from './module/auth/auth.service';
     ConfigModule,
     AuthModule,
   ],
-  controllers: [AuthController],
-  providers: [AuthService],
 })
 export class AppModule {}

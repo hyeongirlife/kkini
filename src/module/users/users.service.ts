@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-// import { User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { ConfigService } from '@provider/config';
 // import { CookieService } from '@provider/cookie';
 // import { JwtService } from '@provider/jwt/jwt.service';

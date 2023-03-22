@@ -2,7 +2,7 @@ export interface AppConfig {
   readonly environment: 'development' | 'production';
   readonly port: number;
   //   readonly clientHost: string;
-  //   readonly apiHost: string;
+  readonly apiHost: string;
 }
 
 export interface DatabaseConfig {

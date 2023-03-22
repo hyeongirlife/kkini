@@ -1,14 +1,25 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import { FastifyReply } from 'fastify';
 import { AuthService } from './auth.service';
+import { LoginUserDTO } from './dto';
 import { CreateUserDTO } from './dto/auth-register-body.dto';
-import { User } from './user.entity';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('/signup')
-  signUp(@Body() createUserDTO: CreateUserDTO): Promise<User> {
-    return this.authService.signUp(createUserDTO);
+  async register(
+    @Body() createUserDTO: CreateUserDTO,
+    @Res() reply: FastifyReply,
+  ) {
+    await this.authService.register(createUserDTO);
+    reply.status(HttpStatus.CREATED).send('Created');
+  }
+
+  @Post('/login')
+  async login(@Body() loginUserDTO: LoginUserDTO, @Res() reply: FastifyReply) {
+    await this.authService.login(loginUserDTO);
+    reply.status(HttpStatus.OK).send('Ok');
   }
 }
