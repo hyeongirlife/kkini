@@ -8,7 +8,16 @@
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "baseUrl": ".", // !! 기본 url 시작 기준
     "experimentalDecorators": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "paths": {
+      "@provider/*": ["src/provider/*"],
+      "@module/*": ["src/module/*"],
+      "@constants/*": ["src/constants/*"],
+      "@common/*": ["src/common/*"],
+      "@config/*": ["config/*"],
+      "@test/*": ["test/*"]
+    }
   }
 }

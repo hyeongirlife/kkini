@@ -1,15 +1,17 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { AuthController } from './auth/auth.controller';
-import { AuthService } from './auth/auth.service';
-import { AuthModule } from './auth/auth.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-
+import { ConfigModule, ConfigModule as NestConfigModule } from '@nestjs/config';
+import { configuration } from './provider/config';
+import { AuthModule } from './module/auth/auth.module';
+import { AuthController } from './module/auth/auth.controller';
+import { AuthService } from './module/auth/auth.service';
 
 @Module({
-  imports: [AuthModule, TypeOrmModule.forRoot[(JSON.parse(config)], // !! TypeORM 설정 적용
-  controllers: [AppController, AuthController],
-  providers: [AppService, AuthService],
+  imports: [
+    NestConfigModule.forRoot({ load: [configuration] }),
+    ConfigModule,
+    AuthModule,
+  ],
+  controllers: [AuthController],
+  providers: [AuthService],
 })
 export class AppModule {}
