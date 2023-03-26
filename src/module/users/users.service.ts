@@ -6,52 +6,52 @@ import {
 } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { ConfigService } from '@provider/config';
-// import { CookieService } from '@provider/cookie';
-// import { JwtService } from '@provider/jwt/jwt.service';
+import { CookieService } from '@provider/cookie';
+import { JwtService } from '@provider/jwt/jwt.service';
 import { PrismaService } from '@provider/prisma';
-// import { FastifyReply } from 'fastify';
+import { FastifyReply } from 'fastify';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly config: ConfigService,
-    // private readonly jwt: JwtService,
-    // private readonly cookie: CookieService,
+    private readonly jwt: JwtService,
+    private readonly cookie: CookieService,
     private readonly prisma: PrismaService,
   ) {}
-  // async setJwtToken(
-  //   reply: FastifyReply,
-  //   LoggedUserData: LoggedUserData,
-  // ): Promise<void> {
-  //   try {
-  //     const jwtConfig = this.config.get('jwt');
-  //     const { accessTokenMaxAge, refreshTokenMaxAge } = jwtConfig;
+  async setJwtToken(
+    reply: FastifyReply,
+    LoggedUserData: LoggedUserData,
+  ): Promise<void> {
+    try {
+      const jwtConfig = this.config.get('jwt');
+      const { accessTokenMaxAge, refreshTokenMaxAge } = jwtConfig;
 
-  //     const accessToken = this.jwt.signToken(
-  //       { user: LoggedUserData },
-  //       {
-  //         expiresIn: accessTokenMaxAge,
-  //       },
-  //     );
+      const accessToken = this.jwt.signToken(
+        { user: LoggedUserData },
+        {
+          expiresIn: accessTokenMaxAge,
+        },
+      );
 
-  //     const refreshToken = this.jwt.signToken(
-  //       { userId: LoggedUserData.id },
-  //       {
-  //         expiresIn: refreshTokenMaxAge,
-  //       },
-  //     );
+      const refreshToken = this.jwt.signToken(
+        { userId: LoggedUserData.id },
+        {
+          expiresIn: refreshTokenMaxAge,
+        },
+      );
 
-  //     await this.cookie.setCookie(reply, 'access_token', accessToken, {
-  //       maxAge: accessTokenMaxAge / 1000, // max age base on 1ms
-  //     });
+      await this.cookie.setCookie(reply, 'access_token', accessToken, {
+        maxAge: accessTokenMaxAge / 1000, // max age base on 1ms
+      });
 
-  //     await this.cookie.setCookie(reply, 'refresh_token', refreshToken, {
-  //       maxAge: refreshTokenMaxAge / 1000, // max age base on 1ms
-  //     });
-  //   } catch (error) {
-  //     throw new InternalServerErrorException(error);
-  //   }
-  // }
+      await this.cookie.setCookie(reply, 'refresh_token', refreshToken, {
+        maxAge: refreshTokenMaxAge / 1000, // max age base on 1ms
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
   async getLoggedUserData(userId: string): Promise<LoggedUserData> {
     try {
       const user = await this.prisma.user.findUnique({

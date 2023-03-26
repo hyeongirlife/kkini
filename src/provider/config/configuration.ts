@@ -9,15 +9,15 @@ const validate = (config: Config): void => {
     app: Joi.object().keys({
       environment: Joi.string().valid('development', 'production').required(),
       port: Joi.number().required(),
-      // clientHost: Joi.string().required(),
+      clientHost: Joi.string().required(),
       apiHost: Joi.string().required(),
     }),
-    // jwt: Joi.object().keys({
-    //   jwtSecretKey: Joi.string().required(),
-    //   cookieSecretKey: Joi.string().required(),
-    //   accessTokenMaxAge: Joi.number().integer().required(),
-    //   refreshTokenMaxAge: Joi.number().integer().required(),
-    // }),
+    jwt: Joi.object().keys({
+      jwtSecretKey: Joi.string().required(),
+      cookieSecretKey: Joi.string().required(),
+      accessTokenMaxAge: Joi.number().integer().required(),
+      refreshTokenMaxAge: Joi.number().integer().required(),
+    }),
     database: Joi.object().keys({
       provider: Joi.string().required(),
       host: Joi.string().required(),
@@ -26,10 +26,10 @@ const validate = (config: Config): void => {
       userName: Joi.string().required(),
       password: Joi.string().allow('').required(),
     }),
-    // throttle: Joi.object().keys({
-    //   ttl: Joi.number().integer().required(),
-    //   limit: Joi.number().integer().required(),
-    // }),
+    throttle: Joi.object().keys({
+      ttl: Joi.number().integer().required(),
+      limit: Joi.number().integer().required(),
+    }),
   });
 
   const { error } = schema.validate(config);

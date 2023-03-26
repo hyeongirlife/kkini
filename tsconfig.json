@@ -2,12 +2,13 @@
   "compilerOptions": {
     "lib": ["es5", "es6"],
     "target": "ES2017",
-    "module": "commonjs",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "outDir": "./build",
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "incremental": true,
     "baseUrl": ".", // !! 기본 url 시작 기준
     "experimentalDecorators": true,
     "sourceMap": true,

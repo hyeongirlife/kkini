@@ -5,10 +5,11 @@ import { UsersModule } from '@module/users/users.module';
 import { UtilsModule } from '@provider/utils';
 import { PrismaModule } from '@provider/prisma';
 // import { CookieModule } from '@provider/cookie';
+import { KakaoStrategy } from './strategy/kakao.strategy';
 
 @Module({
   imports: [UsersModule, PrismaModule, UtilsModule],
-  providers: [AuthService],
+  providers: [AuthService, KakaoStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}
