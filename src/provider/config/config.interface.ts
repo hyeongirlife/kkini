@@ -29,7 +29,10 @@ export interface ThrottleConfig {
   readonly ttl: number;
   readonly limit: number;
 }
-
+export interface KakaoConfig {
+  readonly clientId: string;
+  readonly callbackURL: string;
+}
 export type ConfigKey = 'app' | 'database' | 'jwt' | 'throttle';
 
 export interface Config {
@@ -37,4 +40,5 @@ export interface Config {
   database: DatabaseConfig;
   jwt: JWTCofnig;
   throttle: ThrottleConfig;
+  kakao: KakaoConfig;
 }
