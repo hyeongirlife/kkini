@@ -7,21 +7,73 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String   @id @default(cuid())
-  username  String   @unique @db.VarChar(15)
-  email     String   @unique @db.VarChar(50)
-  password  String
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-  Post      Post[]
+model User { 
+  id                Int   @id @default(autoincrement())
+  username          String   @unique @db.VarChar(15)
+  email             String   @unique @db.VarChar(50)
+  password          String
+  createdAt         DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt         DateTime @updatedAt @db.Timestamptz(6)
+  Review            Review[]
+  Receipe           Receipe[]
+  Like              Like[]
+  Bookmark          Bookmark[]
 }
 
-model Post {
-  id        String @id @default(cuid())
-  title     String @db.VarChar(50)
-  content   String @db.Text
-  thumbnail String @db.VarChar()
-  fkUserId  String @unique
-  user      User   @relation(fields: [fkUserId], references: [id], onDelete: Cascade)
+model Receipe {
+  id                Int @id @default(autoincrement())
+  userId            Int @unique
+  title             String @db.Text
+  picture           String @db.VarChar()
+  contents          Json @db.Json()
+  createdAt         DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt         DateTime @updatedAt @db.Timestamptz(6)
+  user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  review            Review[]
+  like              Like[]
+  bookmark          Bookmark[]
+  receipeIngredient ReceipeIngredient[]
+}
+
+model Review {
+  userId            Int @unique
+  receipeId         Int @unique
+  contents          String @db.VarChar()
+  createdAt         DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt         DateTime @updatedAt @db.Timestamptz(6)
+  user              User     @relation(fields: [userId],references: [id], onDelete: Cascade)
+  receipe           Receipe  @relation(fields: [receipeId], references: [id], onDelete:Cascade)
+}
+
+model Like {
+  userId            Int @unique
+  receipeId         Int @unique
+  createdAt         DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt         DateTime @updatedAt @db.Timestamptz(6)
+  user              User     @relation(fields: [userId],references: [id], onDelete: Cascade)
+  receipe           Receipe  @relation(fields: [receipeId], references: [id], onDelete:Cascade)
+}
+model Bookmark {
+  userId            Int @unique
+  receipeId         Int @unique
+  createdAt         DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt         DateTime @updatedAt @db.Timestamptz(6)
+  user              User     @relation(fields: [userId],references: [id], onDelete: Cascade)
+  receipe           Receipe  @relation(fields: [receipeId], references: [id], onDelete:Cascade)
+}
+
+model Ingredient {
+  id                Int @unique
+  name              String @db.VarChar(100)
+  category          String @db.VarChar(100)
+  createdAt         DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt         DateTime @updatedAt @db.Timestamptz(6)
+  receipeIngredient ReceipeIngredient[]
+}
+
+model ReceipeIngredient {
+  receipeId          Int @unique
+  ingredientId       Int @unique
+  receipt            Receipe @relation(fields: [receipeId],references: [id], onDelete:Cascade)
+  ingredient         Ingredient @relation(fields: [ingredientId],references: [id], onDelete: Cascade)
 }
